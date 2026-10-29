@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextGen Bank | Sovereign Wealth & Retail Portal</title>
+    <meta name="description" content="Next-Generation Banking Portal with SQLite persistence and STQA verified business logic.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Custom Vanilla CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i data-lucide="shield-check"></i>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">NextGen<span class="gradient-text">Bank</span></span>
+                    <span class="brand-tag">STQA LP-IV CERTIFIED</span>
+                </div>
+            </div>
+
+            <!-- Macro System Status -->
+            <div class="system-status">
+                <div class="status-indicator">
+                    <span class="status-dot pulse"></span>
+                    <span class="status-label">SQLite3 ACID Active</span>
+                </div>
+                <button id="btn-stqa-modal" class="btn-ghost" title="Open STQA Test Runner">
+                    <i data-lucide="terminal"></i>
+                    <span>Test Suite</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <p class="sidebar-heading">Navigation</p>
+                <nav class="nav-menu">
+                    <button class="nav-item active" data-tab="tab-overview">
+                        <i data-lucide="layout-dashboard"></i>
+                        <span>Dashboard</span>
+                    </button>
+                    <button class="nav-item" data-tab="tab-deposit">
+                        <i data-lucide="arrow-down-left"></i>
+                        <span>Deposit Funds</span>
+                    </button>
+                    <button class="nav-item" data-tab="tab-withdraw">
+                        <i data-lucide="arrow-up-right"></i>
+                        <span>Withdraw Funds</span>
+                    </button>
+                    <button class="nav-item" data-tab="tab-create">
+                        <i data-lucide="user-plus"></i>
+                        <span>Open Account</span>
+                    </button>
+                    <button class="nav-item" data-tab="tab-accounts">
+                        <i data-lucide="users"></i>
+                        <span>All Accounts</span>
+                    </button>
+                    <button class="nav-item" data-tab="tab-stqa-lab">
+                        <i data-lucide="flask-conical"></i>
+                        <span>STQA Testing Lab</span>
+                    </button>
+                    <button class="nav-item" data-tab="tab-docs">
+                        <i data-lucide="book-open"></i>
+                        <span>University Docs</span>
+                    </button>
+                </nav>
+            </div>
+
+            <div class="account-selector-box">
+                <label for="active-account-select" class="selector-label">
+                    <i data-lucide="credit-card"></i> Selected Account
+                </label>
+                <select id="active-account-select" class="custom-select">
+                    <option value="" disabled selected>Loading Accounts...</option>
+                </select>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="footer-badge">
+                    <i data-lucide="check-circle-2"></i>
+                    <span>100% Branch Coverage</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Dynamic Main Views Area -->
+        <section class="content-area">
+            <!-- Global Macro KPI Bar -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon-wrap cyan">
+                        <i data-lucide="wallet"></i>
+                    </div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">Active Balance</span>
+                        <h3 class="kpi-value" id="kpi-active-balance">$0.00</h3>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon-wrap purple">
+                        <i data-lucide="landmark"></i>
+                    </div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">Vault Liquidity</span>
+                        <h3 class="kpi-value" id="kpi-total-liquidity">$0.00</h3>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon-wrap emerald">
+                        <i data-lucide="users"></i>
+                    </div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">Total Accounts</span>
+                        <h3 class="kpi-value" id="kpi-total-accounts">0</h3>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon-wrap indigo">
+                        <i data-lucide="badge-check"></i>
+                    </div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">STQA Verification</span>
+                        <h3 class="kpi-value text-emerald">PASSED</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 1: OVERVIEW & CARD VIEW -->
+            <div id="tab-overview" class="view-panel active">
+                <div class="panel-grid">
+                    <!-- 3D Interactive Virtual Bank Card -->
+                    <div class="card-showcase-column">
+                        <div class="card-3d-wrapper" id="card-3d">
+                            <div class="virtual-card">
+                                <div class="card-glass-shine"></div>
+                                <div class="card-header-row">
+                                    <div class="card-chip"></div>
+                                    <div class="contactless-icon">
+                                        <i data-lucide="wifi"></i>
+                                    </div>
+                                    <div class="card-network-badge">PLATINUM // VIRTUAL</div>
+                                </div>
+                                <div class="card-body">
+                                    <span class="card-caption">ACCOUNT NUMBER</span>
+                                    <div class="card-account-number" id="vc-acc-number">•••• •••• •••• 0001</div>
+                                </div>
+                                <div class="card-footer-row">
+                                    <div class="card-holder-col">
+                                        <span class="card-caption">ACCOUNT HOLDER</span>
+                                        <div class="card-holder-name" id="vc-holder-name">ALICE SMITH</div>
+                                    </div>
+                                    <div class="card-balance-col">
+                                        <span class="card-caption">LEDGER BALANCE</span>
+                                        <div class="card-balance-number" id="vc-balance">$100.00</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions Floating Bar -->
+                        <div class="quick-actions-bar">
+                            <button class="btn-action" onclick="app.switchTab('tab-deposit')">
+                                <i data-lucide="plus-circle"></i>
+                                <span>Quick Deposit</span>
+                            </button>
+                            <button class="btn-action" onclick="app.switchTab('tab-withdraw')">
+                                <i data-lucide="minus-circle"></i>
+                                <span>Withdraw Funds</span>
+                            </button>
+                            <button class="btn-action" onclick="app.switchTab('tab-create')">
+                                <i data-lucide="user-plus"></i>
+                                <span>New Account</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Account Specifications & Live Ledger Breakdown -->
+                    <div class="details-column">
+                        <div class="glass-box">
+                            <div class="box-header">
+                                <h3><i data-lucide="fingerprint"></i> Account Specifications</h3>
+                                <span class="badge-status">Active Ledger</span>
+                            </div>
+                            <div class="spec-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Internal Account ID</span>
+                                    <span class="spec-value mono" id="spec-id">#1</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Primary Owner</span>
+                                    <span class="spec-value" id="spec-name">Alice</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Overdraft Guard</span>
+                                    <span class="spec-value text-emerald">Active (Throws ValueError)</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Database Storage</span>
+                                    <span class="spec-value mono">SQLite (bank.db)</span>
+                                </div>
+                            </div>
+
+                            <hr class="divider">
+
+                            <div class="stqa-highlight">
+                                <h4><i data-lucide="shield-alert"></i> STQA Guard Clause Monitor</h4>
+                                <p>Transactions are validated against <code class="inline-code">BankAccount.deposit</code> and <code class="inline-code">BankAccount.withdraw</code> before state mutation occurs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: DEPOSIT FUNDS -->
+            <div id="tab-deposit" class="view-panel">
+                <div class="form-container-card">
+                    <div class="form-header">
+                        <div class="form-icon-wrap cyan">
+                            <i data-lucide="arrow-down-left"></i>
+                        </div>
+                        <div>
+                            <h2>Deposit Funds</h2>
+                            <p>Credit funds to the active account. Triggers internal decision branch validation.</p>
+                        </div>
+                    </div>
+
+                    <form id="form-deposit" class="fintech-form">
+                        <div class="form-group">
+                            <label for="deposit-target-account">Target Account ID</label>
+                            <input type="number" id="deposit-target-account" class="input-field mono" min="1" required>
+                        </div>
+
+                        <!-- Quick Deposit Preset Chips -->
+                        <div class="preset-chips-wrap">
+                            <span class="chips-label">Quick Presets:</span>
+                            <div class="chips-list">
+                                <button type="button" class="preset-chip" data-amount="50">+$50</button>
+                                <button type="button" class="preset-chip" data-amount="100">+$100</button>
+                                <button type="button" class="preset-chip" data-amount="250">+$250</button>
+                                <button type="button" class="preset-chip" data-amount="500">+$500</button>
+                                <button type="button" class="preset-chip" data-amount="1000">+$1,000</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deposit-amount">Deposit Amount ($)</label>
+                            <div class="input-currency-wrapper">
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="deposit-amount" class="input-field currency mono" min="0.01" step="0.01" placeholder="100.00" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary cyan-gradient" id="btn-submit-deposit">
+                            <i data-lucide="check"></i> Confirm & Credit Ledger
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 3: WITHDRAW FUNDS -->
+            <div id="tab-withdraw" class="view-panel">
+                <div class="form-container-card">
+                    <div class="form-header">
+                        <div class="form-icon-wrap purple">
+                            <i data-lucide="arrow-up-right"></i>
+                        </div>
+                        <div>
+                            <h2>Withdraw Funds</h2>
+                            <p>Debit funds with real-time overdraft protection and insufficient funds prevention.</p>
+                        </div>
+                    </div>
+
+                    <form id="form-withdraw" class="fintech-form">
+                        <div class="form-group">
+                            <label for="withdraw-target-account">Target Account ID</label>
+                            <input type="number" id="withdraw-target-account" class="input-field mono" min="1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="withdraw-amount">Withdrawal Amount ($)</label>
+                            <div class="input-currency-wrapper">
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="withdraw-amount" class="input-field currency mono" min="0.01" step="0.01" placeholder="50.00" required>
+                            </div>
+                        </div>
+
+                        <div class="balance-preview-box">
+                            <div class="preview-row">
+                                <span>Available to Withdraw:</span>
+                                <span id="withdraw-available-bal" class="mono text-emerald">$0.00</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary purple-gradient" id="btn-submit-withdraw">
+                            <i data-lucide="arrow-right"></i> Execute Debit Transaction
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 4: CREATE ACCOUNT -->
+            <div id="tab-create" class="view-panel">
+                <div class="form-container-card">
+                    <div class="form-header">
+                        <div class="form-icon-wrap emerald">
+                            <i data-lucide="user-plus"></i>
+                        </div>
+                        <div>
+                            <h2>Open New Bank Account</h2>
+                            <p>Registers a new account holder in SQLite with an auto-incremented primary key.</p>
+                        </div>
+                    </div>
+
+                    <form id="form-create-account" class="fintech-form">
+                        <div class="form-group">
+                            <label for="create-name">Account Holder Full Name</label>
+                            <input type="text" id="create-name" class="input-field" placeholder="e.g. Katherine Johnson" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="create-initial-deposit">Initial Deposit Amount ($)</label>
+                            <div class="input-currency-wrapper">
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="create-initial-deposit" class="input-field currency mono" min="0" step="10.00" value="100.00" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary emerald-gradient" id="btn-submit-create">
+                            <i data-lucide="sparkles"></i> Open & Issue Account
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 5: ALL ACCOUNTS TABLE -->
+            <div id="tab-accounts" class="view-panel">
+                <div class="table-container-card">
+                    <div class="table-header">
+                        <div>
+                            <h2>Registered Client Accounts</h2>
+                            <p>Direct view of the SQLite <code class="inline-code">accounts</code> table.</p>
+                        </div>
+                        <button class="btn-ghost" id="btn-refresh-accounts">
+                            <i data-lucide="refresh-cw"></i> Refresh
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="fintech-table">
+                            <thead>
+                                <tr>
+                                    <th>Account ID</th>
+                                    <th>Holder Name</th>
+                                    <th>Ledger Balance</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="accounts-table-body">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; color: #94a3b8;">Loading accounts...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: STQA TESTING LAB (WHITE-BOX & BLACK-BOX) -->
+            <div id="tab-stqa-lab" class="view-panel">
+                <div class="lab-container-card">
+                    <div class="lab-header">
+                        <div class="lab-header-left">
+                            <div class="form-icon-wrap indigo">
+                                <i data-lucide="flask-conical"></i>
+                            </div>
+                            <div>
+                                <h2>STQA Testing & Automated Report Lab</h2>
+                                <p>Execute live White-Box and Black-Box test suites to generate dynamic verification reports.</p>
+                            </div>
+                        </div>
+                        <div class="lab-actions-header">
+                            <button class="btn-primary emerald-gradient" id="btn-lab-run-all">
+                                <i data-lucide="zap"></i> Run Complete Suite
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dual Testing Cards Grid -->
+                    <div class="test-cards-grid">
+                        <!-- White-Box Card -->
+                        <div class="test-type-card whitebox-theme">
+                            <div class="test-card-top">
+                                <span class="test-type-pill cyan">Structural / Unit Testing</span>
+                                <i data-lucide="cpu" class="test-card-icon"></i>
+                            </div>
+                            <h3>White-Box Testing Suite</h3>
+                            <p class="test-target">Target: <code class="inline-code">app/bank_logic.py</code> (<code class="inline-code">tests/test_whitebox.py</code>)</p>
+                            <ul class="test-features-list">
+                                <li><i data-lucide="check"></i> 100% Statement & Path Coverage</li>
+                                <li><i data-lucide="check"></i> 100% Decision / Branch Coverage</li>
+                                <li><i data-lucide="check"></i> Negative Deposit & Guard Clauses</li>
+                                <li><i data-lucide="check"></i> Overdraft Exception Thresholds ($balance + 0.01)</li>
+                            </ul>
+                            <button class="btn-primary cyan-gradient btn-full" id="btn-lab-run-whitebox">
+                                <i data-lucide="play"></i> Run White-Box Tests
+                            </button>
+                        </div>
+
+                        <!-- Black-Box Card -->
+                        <div class="test-type-card blackbox-theme">
+                            <div class="test-card-top">
+                                <span class="test-type-pill purple">Functional / Integration Testing</span>
+                                <i data-lucide="package-check" class="test-card-icon"></i>
+                            </div>
+                            <h3>Black-Box Testing Suite</h3>
+                            <p class="test-target">Target: <code class="inline-code">app/database.py</code> + SQLite (<code class="inline-code">tests/test_blackbox.py</code>)</p>
+                            <ul class="test-features-list">
+                                <li><i data-lucide="check"></i> Specification & Requirements Verification</li>
+                                <li><i data-lucide="check"></i> User Account Onboarding & Persistence</li>
+                                <li><i data-lucide="check"></i> Multi-User Transaction Isolation</li>
+                                <li><i data-lucide="check"></i> Database Ledger State Integrity</li>
+                            </ul>
+                            <button class="btn-primary purple-gradient btn-full" id="btn-lab-run-blackbox">
+                                <i data-lucide="play"></i> Run Black-Box Tests
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Live Generated Report Section -->
+                    <div id="lab-report-section" class="lab-report-wrapper hidden">
+                        <div class="report-header-banner">
+                            <div class="report-title-group">
+                                <i data-lucide="file-check-2" class="text-emerald"></i>
+                                <div>
+                                    <h3 id="report-title">STQA Automated Test Execution Report</h3>
+                                    <span class="report-timestamp" id="report-timestamp">Generated just now</span>
+                                </div>
+                            </div>
+                            <span class="status-badge-verified" id="report-verdict-badge">VERIFIED · 100% PASS RATE</span>
+                        </div>
+
+                        <!-- Report Summary KPIs -->
+                        <div class="report-kpi-row">
+                            <div class="report-kpi-item">
+                                <span class="report-kpi-label">Tests Executed</span>
+                                <h4 class="report-kpi-num" id="report-kpi-total">0</h4>
+                            </div>
+                            <div class="report-kpi-item">
+                                <span class="report-kpi-label">Passed</span>
+                                <h4 class="report-kpi-num text-emerald" id="report-kpi-passed">0</h4>
+                            </div>
+                            <div class="report-kpi-item">
+                                <span class="report-kpi-label">Failed</span>
+                                <h4 class="report-kpi-num text-rose" id="report-kpi-failed">0</h4>
+                            </div>
+                            <div class="report-kpi-item">
+                                <span class="report-kpi-label">Pass Percentage</span>
+                                <h4 class="report-kpi-num text-cyan" id="report-kpi-rate">100%</h4>
+                            </div>
+                        </div>
+
+                        <!-- Detailed Test Cases Result Table -->
+                        <div class="report-table-box">
+                            <h4><i data-lucide="list-checks"></i> Executed Test Cases Breakdown</h4>
+                            <div class="table-responsive">
+                                <table class="fintech-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Test Identifier / Path</th>
+                                            <th>Testing Type</th>
+                                            <th>Outcome Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="report-cases-tbody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Formal Acceptance Summary Box -->
+                        <div class="formal-acceptance-box">
+                            <div class="acceptance-header">
+                                <i data-lucide="award" class="text-cyan"></i>
+                                <div>
+                                    <h5>Academic Quality Assurance Sign-Off (SPPU LP-IV)</h5>
+                                    <p id="acceptance-statement">The executed test suite satisfies all IEEE 829 Software Quality Assurance acceptance criteria.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Collapsible Raw Pytest Terminal Log -->
+                        <details class="report-details-raw">
+                            <summary><i data-lucide="terminal"></i> View Raw Pytest Output Terminal Log</summary>
+                            <pre class="terminal-output" id="lab-raw-output"></pre>
+                        </details>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 7: UNIVERSITY DOCUMENTATION VIEWER -->
+            <div id="tab-docs" class="view-panel">
+                <div class="lab-container-card">
+                    <div class="lab-header">
+                        <div class="lab-header-left">
+                            <div class="form-icon-wrap cyan">
+                                <i data-lucide="book-open"></i>
+                            </div>
+                            <div>
+                                <h2>SPPU STQA University Documentation</h2>
+                                <p>Interactive viewer for official IEEE 829 test documentation files.</p>
+                            </div>
+                        </div>
+                        <div class="doc-switcher-btns">
+                            <button class="btn-ghost active" id="btn-doc-plan" onclick="app.loadDoc('plan')">1. Test Plan</button>
+                            <button class="btn-ghost" id="btn-doc-cases" onclick="app.loadDoc('cases')">2. Test Cases</button>
+                            <button class="btn-ghost" id="btn-doc-report" onclick="app.loadDoc('report')">3. Test Report</button>
+                        </div>
+                    </div>
+
+                    <div class="doc-viewer-card">
+                        <div class="doc-viewer-header">
+                            <h4 id="doc-viewer-title">docs/1_Test_Plan.md</h4>
+                        </div>
+                        <pre class="doc-content-box" id="doc-content-body">Loading documentation...</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- STQA TEST RUNNER MODAL -->
+    <div class="modal-overlay" id="stqa-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <i data-lucide="terminal" class="text-cyan"></i>
+                    <h3>STQA Automated Test Inspector (Pytest)</h3>
+                </div>
+                <button class="btn-close-modal" id="btn-close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-desc">Runs the official university Pytest test suite (<code class="inline-code">tests/test_whitebox.py</code> & <code class="inline-code">tests/test_blackbox.py</code>) against the live backend.</p>
+                <div class="test-runner-actions">
+                    <button class="btn-primary cyan-gradient" id="btn-run-tests-live">
+                        <i data-lucide="play"></i> Run Pytest Suite
+                    </button>
+                    <span id="test-run-spinner" class="spinner-text hidden">
+                        <span class="spinner"></span> Executing tests...
+                    </span>
+                </div>
+                <pre class="terminal-output" id="terminal-output">Click "Run Pytest Suite" to execute tests live.</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toasts Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

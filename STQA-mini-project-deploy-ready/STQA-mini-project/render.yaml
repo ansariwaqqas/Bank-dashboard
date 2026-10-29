@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: stqa-mini-project
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python backend/app.py
+    healthCheckPath: /api/stats
